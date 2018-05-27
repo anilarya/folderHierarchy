@@ -1,0 +1,24 @@
+<h1> Selected folder name:<span *ngIf='selectedFolder'> {{ selectedFolder?.name }}</span> </h1>
+<input type="text" name="" class="" [(ngModel)]="folder_name" placeholder="Folder name">
+<button class="btn btn-sm" (click)="addFolder()"> Create Folder</button>
+<ul>
+  <ng-template #recursiveList let-folder>
+    <li *ngFor="let item of folder ; let i = index">
+      <a href="#">
+            <span (click)="toggle(item)">
+              <i class="material-icons" *ngIf="item?.type=='d' && item.expanded && item.children.length>0">folder_open
+              </i>
+              <i class="material-icons" *ngIf="item?.type=='d' && (!item?.expanded || item.children.length ==0 )">folder
+              </i>
+
+              {{item.name}}
+
+              </span>
+          </a>
+      <ul *ngIf="item?.children.length > 0 &&  item?.expanded">
+        <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.children }"></ng-container>
+      </ul>
+    </li>
+  </ng-template>
+  <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: folder }"></ng-container>
+</ul>
